@@ -4,3 +4,18 @@
 @tailwind utilities;
 
 
+canvas {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 100vw;
+    height: 100vh;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    z-index: -1; /* keep it behind content */
+}
+
+
+#container {
+    height: 500vh;
+}

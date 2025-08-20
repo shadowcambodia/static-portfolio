@@ -1,0 +1,153 @@
+import './style.css'
+import gsap from 'gsap'
+import {createCard} from "./template/experience_card.js";
+import $ from 'jquery'
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
+
+
+const LANDING_FRAMES =[
+    '/assets/img/landing/frame_0001.png',
+    '/assets/img/landing/frame_0002.png',
+    '/assets/img/landing/frame_0003.png',
+    '/assets/img/landing/frame_0004.png',
+    '/assets/img/landing/frame_0005.png',
+    '/assets/img/landing/frame_0006.png',
+    '/assets/img/landing/frame_0007.png',
+    '/assets/img/landing/frame_0008.png',
+    '/assets/img/landing/frame_0009.png',
+    '/assets/img/landing/frame_0010.png',
+    '/assets/img/landing/frame_0011.png',
+]
+function animateCards(){
+    const cardEls = document.querySelectorAll(".exp-card");
+    const cardHeight = cardEls[0].offsetHeight;
+    const gap = parseFloat(getComputedStyle(cardEls[0]).marginBottom) || 0;
+    const step = cardHeight + gap;
+
+
+
+    const tl = gsap.timeline();
+    tl.to(cardEls, {
+        y: `-=${step}`,
+        duration: .2,
+        ease: "none",
+        repeat: 5,
+
+    })
+// snap back to original (Card 1 at top)
+    tl.to(cardEls, {
+        y: 0,
+        duration: 1,
+        ease: "power4.out"
+    });
+}
+
+function revealCard(){
+    const cards = $(".exp-card");
+    const height = $(cards[0]).outerHeight();
+    const tl = gsap.timeline({defaults: {duration: 1, ease: "power1.out"}});
+    for (let i = 1; i <= 3; i++) {
+        tl
+            .to(cards[i],{
+                height: 'auto',
+            })
+            .to(cards[i],{
+                height: `${height}`,
+            })
+            .to(cards,{
+                y: `-=${height}`,
+            },"<")
+    }
+
+
+}
+function initCard(){
+    const container = document.getElementById('exp-card-container');
+    if(container){
+        for (let i = 1; i <= 6; i++) {
+            const card = createCard(`Card ${i}`, `This is card number ${i}.`);
+            container.appendChild(card);
+        }
+    }
+}
+
+// animateCards();
+// revealCard()
+$(document).ready(function() {
+    gsap.registerPlugin(ScrollTrigger);
+    const video = document.querySelector(".video-background");
+    let src = video.currentSrc || video.src;
+    console.log(video, src);
+
+    /* Make sure the video is 'activated' on iOS */
+    function once(el, event, fn, opts) {
+        var onceFn = function (e) {
+            el.removeEventListener(event, onceFn);
+            fn.apply(this, arguments);
+        };
+        el.addEventListener(event, onceFn, opts);
+        return onceFn;
+    }
+
+    once(document.documentElement, "touchstart", function (e) {
+        video.play();
+        video.pause();
+    });
+
+    /* ---------------------------------- */
+    /* Scroll Control! */
+
+
+    let tl = gsap.timeline({
+        defaults: { duration: 1 },
+        scrollTrigger: {
+            trigger: "#container",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: true
+        }
+    });
+
+    once(video, "loadedmetadata", () => {
+        tl.fromTo(
+            video,
+            { currentTime: 0 },
+            {
+                currentTime: video.duration || 1,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#container",
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: true,
+                },
+                onUpdate: () => {
+                    // force a repaint
+                    video.pause();
+                }
+            })
+    });
+
+    /* When first coded, the Blobbing was important to ensure the browser wasn't dropping previously played segments, but it doesn't seem to be a problem now. Possibly based on memory availability? */
+    setTimeout(function () {
+        if (window["fetch"]) {
+            fetch(src)
+                .then((response) => response.blob())
+                .then((response) => {
+                    var blobURL = URL.createObjectURL(response);
+
+                    var t = video.currentTime;
+                    once(document.documentElement, "touchstart", function (e) {
+                        video.play();
+                        video.pause();
+                    });
+
+                    video.setAttribute("src", blobURL);
+                    video.currentTime = t + 0.01;
+                });
+        }
+    }, 1000);
+});
