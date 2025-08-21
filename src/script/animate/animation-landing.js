@@ -3,7 +3,6 @@ import {createCard} from "/src/template/experience_card.js";
 import $ from 'jquery'
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
 
 
 
@@ -73,6 +72,9 @@ export function initCard(){
     }
 }
 export function imageSequence(config) {
+    console.log($(config.canvas).length)
+    if(!$(config.canvas).length)
+        return ;
     generateFramePaths()
 
     let playhead = { frame: 0 }
@@ -109,3 +111,4 @@ export function imageSequence(config) {
         duration: 11
     });
 }
+

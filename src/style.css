@@ -19,3 +19,25 @@ canvas {
 #container {
     height: 500vh;
 }
+/*#pName, #pTitle {*/
+/*    position: relative;*/
+/*    transition: all 1s ease; !* smooth class transition *!*/
+/*}*/
+
+/*.animated{*/
+
+/*}*/
+
+/*#pName.animated {*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    transform: none;*/
+/*}*/
+
+/*#pTitle.animated {*/
+/*    position: absolute;*/
+/*    bottom: 0;*/
+/*    right: 0;*/
+/*    transform: none;*/
+/*}*/
