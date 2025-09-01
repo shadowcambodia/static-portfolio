@@ -1,6 +1,6 @@
 export function createCard(title, content) {
     const template = `
-    <div class="bg-white rounded-2xl shadow-md p-5 m-2 box-border exp-card h-25 overflow-hidden">
+    <div class="bg-white rounded-2xl shadow-md p-5 m-2 box-border exp-card h-25 overflow-hidden h-40">
       <h3>System Developer</h3>
       <p>Wing Bank</p>
       <p class="text-gray-500">Oct 2021 - Present</p>

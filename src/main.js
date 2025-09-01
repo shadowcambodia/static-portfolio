@@ -4,9 +4,8 @@ import $ from 'jquery'
 import gsap from "gsap";
 import {ScrollTrigger} from "gsap/ScrollTrigger";
 import {animateAbout} from "./script/animate/animate-about.js";
+import {animateCards, initCard, revealCard} from "./script/animate/animation-card.js";
 
-// animateCards();
-// revealCard()
 $(document).ready(function() {
     gsap.registerPlugin(ScrollTrigger);
 
@@ -21,6 +20,9 @@ $(document).ready(function() {
     });
 
     animateAbout()
+    initCard()
+    animateCards();
+    // revealCard()
 
 
 });
